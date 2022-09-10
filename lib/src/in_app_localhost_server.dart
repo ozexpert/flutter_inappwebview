@@ -11,8 +11,9 @@ class InAppLocalhostServer {
   bool _started = false;
   HttpServer? _server;
   int _port = 8080;
+  Map<String, String>? _headers = {};
 
-  InAppLocalhostServer({int port = 8080}) {
+  InAppLocalhostServer({Map<String, String>? headers, int port = 8080}) {
     this._port = port;
   }
 
@@ -64,6 +65,10 @@ class InAppLocalhostServer {
               contentType = _getContentTypeFromMimeType(mimeType);
             }
           }
+
+          _headers?.forEach((key, value) {
+            request.response.headers.add(key, value);
+          });
 
           request.response.headers.contentType = contentType;
           request.response.add(body);
